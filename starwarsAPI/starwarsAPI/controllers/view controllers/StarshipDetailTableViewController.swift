@@ -9,6 +9,9 @@
 import UIKit
 
 class StarshipDetailTableViewController: UITableViewController {
+    
+
+    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var modelLabel: UILabel!
     @IBOutlet weak var costLabel: UILabel!

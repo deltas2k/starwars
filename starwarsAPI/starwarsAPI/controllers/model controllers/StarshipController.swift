@@ -11,7 +11,9 @@ import Foundation
 class StarshipController {
     let baseURL = URL(string: StarshipConstants.baseURL)
     
-    func fetchStarships(with searchText: String, completion: @escaping ([Starship?]) -> Void) {
+    static let shared = StarshipController()
+    
+    func fetchStarships(with searchText: String, completion: @escaping ([Starship]) -> Void) {
         guard let url = baseURL else {completion([]); return}
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
         
@@ -29,7 +31,7 @@ class StarshipController {
             guard let data = data else {completion([]);return}
             do {
                 let decoded = try JSONDecoder().decode(TopLevelDict.self, from: data)
-                completion(decoded.starships)
+                completion(decoded.results)
             } catch {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }

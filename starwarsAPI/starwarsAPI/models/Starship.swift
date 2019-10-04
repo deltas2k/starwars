@@ -9,7 +9,7 @@
 import Foundation
 
 struct TopLevelDict: Decodable {
-    let starships: [Starship]
+    let results: [Starship]
 }
 
 struct Starship: Decodable {

@@ -37,7 +37,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="rrx-gE-EQ0" kind="show" id="8Sd-wx-mUQ"/>
+                                    <segue destination="rrx-gE-EQ0" kind="show" identifier="toDetailVC" id="8Sd-wx-mUQ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
