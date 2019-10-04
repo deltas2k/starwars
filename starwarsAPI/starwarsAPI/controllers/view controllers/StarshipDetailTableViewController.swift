@@ -10,7 +10,28 @@ import UIKit
 
 class StarshipDetailTableViewController: UITableViewController {
     
-
+    var films = [String]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    var starship: Starship? {
+        didSet {
+            self.loadViewIfNeeded()
+            guard let starship = starship else {return}
+            for film in starship.films {
+                StarshipController.shared.getFilms(filmURL: film) { (film) in
+                    guard let film = film else { return }
+                    let title = film.title
+                    self.films.append(title)
+                    
+                }
+            }
+        }
+    }
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var modelLabel: UILabel!
@@ -19,35 +40,36 @@ class StarshipDetailTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        updateViews()
     }
 
+    
+    func updateViews() {
+        guard let starship = starship else {return}
+        nameLabel.text = starship.name
+        modelLabel.text = starship.model
+        costLabel.text = starship.costCredits
+        speedLabel.text = starship.maxSpeed
+    }
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
+    
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return films.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "filmCell", for: indexPath)
 
-        // Configure the cell...
+        let film = films[indexPath.row]
+        
+        cell.textLabel?.text = film
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
