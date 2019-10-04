@@ -11,7 +11,7 @@ import Foundation
 class StarshipController {
     let baseURL = URL(string: StarshipConstants.baseURL)
     
-    func fetchStarships(with searchText: String, completion: @escaping ([Starship]) -> Void) {
+    func fetchStarships(with searchText: String, completion: @escaping ([Starship?]) -> Void) {
         guard let url = baseURL else {completion([]); return}
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
         
@@ -35,7 +35,24 @@ class StarshipController {
             }
         }
         .resume()
-        
     }
     
+    func getFilms(filmURL: String, completion: @escaping (Films?) -> Void) {
+        guard let url = URL(string: filmURL) else {completion(nil); return}
+        
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            if let error = error {
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+            guard let data = data else {completion(nil);return}
+            do {
+                let film = try JSONDecoder().decode(Films.self, from: data)
+                completion(film)
+            } catch {
+                completion(nil)
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+        .resume()
+    }
 }

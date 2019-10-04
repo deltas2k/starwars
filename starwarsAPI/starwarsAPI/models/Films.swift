@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct films: Decodable {
+struct Films: Decodable {
     let title: String
 }
